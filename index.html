@@ -620,12 +620,43 @@
       align-items: center;
     }
 
+    .reviews .section-head {
+      display: block;
+      margin-bottom: 0;
+    }
+
+    .reviews .section-head p {
+      margin-top: 14px;
+    }
+
+    .reviews-carousel {
+      display: grid;
+      gap: 16px;
+    }
+
+    .reviews-track {
+      position: relative;
+      min-height: 260px;
+    }
+
     .quote {
+      position: absolute;
+      inset: 0;
       padding: 28px;
       background: #fff;
       border: 1px solid var(--line);
       border-radius: 8px;
       box-shadow: 0 12px 34px rgba(34, 49, 63, 0.06);
+      opacity: 0;
+      transform: translateX(24px) scale(0.98);
+      transition: opacity 620ms ease, transform 620ms ease;
+      pointer-events: none;
+    }
+
+    .quote.is-active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
     }
 
     .quote p {
@@ -635,6 +666,29 @@
 
     .quote span {
       color: var(--muted);
+    }
+
+    .review-dots {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .review-dot {
+      width: 10px;
+      height: 10px;
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(15, 139, 141, 0.24);
+      cursor: pointer;
+      transition: width 220ms ease, background 220ms ease;
+    }
+
+    .review-dot.is-active {
+      width: 30px;
+      background: var(--fresh);
     }
 
     footer {
@@ -661,6 +715,10 @@
 
       .hero {
         min-height: auto;
+      }
+
+      .reviews-track {
+        min-height: 240px;
       }
 
       .hero-media,
@@ -701,6 +759,18 @@
 
       .section-head p {
         margin-top: 12px;
+      }
+
+      .reviews-track {
+        min-height: 330px;
+      }
+
+      .quote {
+        padding: 22px;
+      }
+
+      .quote p {
+        font-size: 18px;
       }
 
       .hero-media,
@@ -905,10 +975,32 @@
         <h2>被宠物喜欢，才是真的洗得好</h2>
         <p>很多胆小、怕吹风或第一次到店的小朋友，会在第二次开始主动放松下来。</p>
       </div>
-      <article class="quote">
-        <p>“我家狗以前洗澡很紧张，这次店员一直慢慢安抚，接回来的时候毛很蓬松，身上也没有刺鼻香味。”</p>
-        <span>豆豆家长 · 小型犬全套精护</span>
-      </article>
+      <div class="reviews-carousel" aria-label="客户评价轮播">
+        <div class="reviews-track">
+          <article class="quote is-active">
+            <p>“我家狗以前洗澡很紧张，这次店员一直慢慢安抚，接回来的时候毛很蓬松，身上也没有刺鼻香味。”</p>
+            <span>豆豆家长 · 小型犬全套精护</span>
+          </article>
+          <article class="quote" aria-hidden="true">
+            <p>“猫咪胆子小，原本担心会应激。护理师先让它熟悉环境，全程都有反馈，回家后状态很放松。”</p>
+            <span>栗子家长 · 猫咪温和洗护</span>
+          </article>
+          <article class="quote" aria-hidden="true">
+            <p>“换季掉毛很严重，做完深层梳理后家里明显少了很多浮毛，还教了我日常梳毛的方法。”</p>
+            <span>可乐家长 · 皮毛护理</span>
+          </article>
+          <article class="quote" aria-hidden="true">
+            <p>“预约时间准，价格说明也清楚。美容造型没有剪得太夸张，保留了我家比熊圆圆的样子。”</p>
+            <span>奶球家长 · 美容造型</span>
+          </article>
+        </div>
+        <div class="review-dots" aria-label="切换客户评价">
+          <button class="review-dot is-active" type="button" aria-label="查看豆豆家长的评价"></button>
+          <button class="review-dot" type="button" aria-label="查看栗子家长的评价"></button>
+          <button class="review-dot" type="button" aria-label="查看可乐家长的评价"></button>
+          <button class="review-dot" type="button" aria-label="查看奶球家长的评价"></button>
+        </div>
+      </div>
     </section>
 
     <section class="booking" id="booking">
@@ -988,7 +1080,10 @@
   <script>
     const slides = Array.from(document.querySelectorAll(".carousel-slide"));
     const dots = Array.from(document.querySelectorAll(".carousel-dot"));
+    const reviews = Array.from(document.querySelectorAll(".quote"));
+    const reviewDots = Array.from(document.querySelectorAll(".review-dot"));
     let activeSlide = 0;
+    let activeReview = 0;
 
     function showSlide(index) {
       activeSlide = (index + slides.length) % slides.length;
@@ -1004,7 +1099,24 @@
       dot.addEventListener("click", () => showSlide(index));
     });
 
+    function showReview(index) {
+      activeReview = (index + reviews.length) % reviews.length;
+      reviews.forEach((review, reviewIndex) => {
+        const isActive = reviewIndex === activeReview;
+        review.classList.toggle("is-active", isActive);
+        review.setAttribute("aria-hidden", String(!isActive));
+      });
+      reviewDots.forEach((dot, dotIndex) => {
+        dot.classList.toggle("is-active", dotIndex === activeReview);
+      });
+    }
+
+    reviewDots.forEach((dot, index) => {
+      dot.addEventListener("click", () => showReview(index));
+    });
+
     window.setInterval(() => showSlide(activeSlide + 1), 4200);
+    window.setInterval(() => showReview(activeReview + 1), 5200);
   </script>
 </body>
 </html>
