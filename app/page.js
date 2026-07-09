@@ -2,6 +2,18 @@
 
 import { useEffect, useState } from "react";
 
+const getTomorrowMorningAppointment = () => {
+  const appointmentDate = new Date();
+  appointmentDate.setDate(appointmentDate.getDate() + 1);
+  appointmentDate.setHours(9, 30, 0, 0);
+
+  const year = appointmentDate.getFullYear();
+  const month = String(appointmentDate.getMonth() + 1).padStart(2, "0");
+  const day = String(appointmentDate.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day} 09:30`;
+};
+
 const carouselSlides = [
   {
     src: "/assets/interior-reception.png",
@@ -50,6 +62,11 @@ const testimonials = [
 export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeReview, setActiveReview] = useState(0);
+  const [preferredArrivalTime, setPreferredArrivalTime] = useState("");
+
+  useEffect(() => {
+    setPreferredArrivalTime(getTomorrowMorningAppointment());
+  }, []);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -319,8 +336,13 @@ export default function Home() {
                 </select>
               </label>
               <label className="wide">
-                期望时间
-                <input type="text" placeholder="例如：本周六下午 3 点" />
+                期望到店日期
+                <input
+                  type="text"
+                  value={preferredArrivalTime}
+                  onChange={(event) => setPreferredArrivalTime(event.target.value)}
+                  aria-label="期望到店日期"
+                />
               </label>
               <label className="wide">
                 宠物情况
