@@ -211,7 +211,7 @@ export default function Home() {
               <div className="contact-list">
                 <div className="contact-item">
                   <strong>营业时间</strong>
-                  <span>周一至周日 09:30 - 20:00</span>
+                  <span>周一至周日 10:00-20:00</span>
                 </div>
                 <div className="contact-item">
                   <strong>门店地址</strong>
