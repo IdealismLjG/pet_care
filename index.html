@@ -437,8 +437,8 @@
 
     .booking {
       display: grid;
-      grid-template-columns: minmax(0, 0.86fr) minmax(360px, 1.14fr);
-      gap: 34px;
+      grid-template-columns: 1fr;
+      gap: 26px;
       align-items: start;
       background: linear-gradient(120deg, var(--mist), #fff8f0);
     }
@@ -457,6 +457,7 @@
 
     .contact-list {
       display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
       margin-top: 24px;
     }
@@ -478,7 +479,7 @@
 
     .store-map {
       position: relative;
-      margin-top: 18px;
+      margin-top: 24px;
       overflow: hidden;
       background: #fffdf8;
       border: 1px solid rgba(220, 231, 234, 0.95);
@@ -686,6 +687,7 @@
       }
 
       .stats,
+      .contact-list,
       .services,
       .process-grid,
       .prices,
