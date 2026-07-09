@@ -1061,8 +1061,8 @@
           </select>
         </label>
         <label class="wide">
-          期望时间
-          <input type="text" placeholder="例如：本周六下午 3 点" />
+          期望到店日期
+          <input id="preferred-arrival-time" type="text" value="明天 09:30" aria-label="期望到店日期" />
         </label>
         <label class="wide">
           宠物情况
@@ -1082,8 +1082,25 @@
     const dots = Array.from(document.querySelectorAll(".carousel-dot"));
     const reviews = Array.from(document.querySelectorAll(".quote"));
     const reviewDots = Array.from(document.querySelectorAll(".review-dot"));
+    const preferredArrivalTime = document.querySelector("#preferred-arrival-time");
     let activeSlide = 0;
     let activeReview = 0;
+
+    function getTomorrowMorningAppointment() {
+      const appointmentDate = new Date();
+      appointmentDate.setDate(appointmentDate.getDate() + 1);
+      appointmentDate.setHours(9, 30, 0, 0);
+
+      const year = appointmentDate.getFullYear();
+      const month = String(appointmentDate.getMonth() + 1).padStart(2, "0");
+      const day = String(appointmentDate.getDate()).padStart(2, "0");
+
+      return `${year}-${month}-${day} 09:30`;
+    }
+
+    if (preferredArrivalTime) {
+      preferredArrivalTime.value = getTomorrowMorningAppointment();
+    }
 
     function showSlide(index) {
       activeSlide = (index + slides.length) % slides.length;
