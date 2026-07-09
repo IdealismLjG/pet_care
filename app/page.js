@@ -20,13 +20,49 @@ const carouselSlides = [
   },
 ];
 
+const testimonials = [
+  {
+    quote:
+      "我家狗以前洗澡很紧张，这次店员一直慢慢安抚，接回来的时候毛很蓬松，身上也没有刺鼻香味。",
+    name: "豆豆家长",
+    detail: "小型犬全套精护",
+  },
+  {
+    quote:
+      "猫咪胆子小，原本担心会应激。护理师先让它熟悉环境，全程都有反馈，回家后状态很放松。",
+    name: "栗子家长",
+    detail: "猫咪温和洗护",
+  },
+  {
+    quote:
+      "换季掉毛很严重，做完深层梳理后家里明显少了很多浮毛，还教了我日常梳毛的方法。",
+    name: "可乐家长",
+    detail: "皮毛护理",
+  },
+  {
+    quote:
+      "预约时间准，价格说明也清楚。美容造型没有剪得太夸张，保留了我家比熊圆圆的样子。",
+    name: "奶球家长",
+    detail: "美容造型",
+  },
+];
+
 export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [activeReview, setActiveReview] = useState(0);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
       setActiveSlide((current) => (current + 1) % carouselSlides.length);
     }, 4200);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveReview((current) => (current + 1) % testimonials.length);
+    }, 5200);
 
     return () => window.clearInterval(timer);
   }, []);
@@ -198,10 +234,31 @@ export default function Home() {
               <h2>被宠物喜欢，才是真的洗得好</h2>
               <p>很多胆小、怕吹风或第一次到店的小朋友，会在第二次开始主动放松下来。</p>
             </div>
-            <article className="quote">
-              <p>“我家狗以前洗澡很紧张，这次店员一直慢慢安抚，接回来的时候毛很蓬松，身上也没有刺鼻香味。”</p>
-              <span>豆豆家长 · 小型犬全套精护</span>
-            </article>
+            <div className="reviews-carousel" aria-label="客户评价轮播">
+              <div className="reviews-track">
+                {testimonials.map((review, index) => (
+                  <article
+                    className={`quote${index === activeReview ? " is-active" : ""}`}
+                    key={review.name}
+                    aria-hidden={index !== activeReview}
+                  >
+                    <p>“{review.quote}”</p>
+                    <span>{review.name} · {review.detail}</span>
+                  </article>
+                ))}
+              </div>
+              <div className="review-dots" aria-label="切换客户评价">
+                {testimonials.map((review, index) => (
+                  <button
+                    className={`review-dot${index === activeReview ? " is-active" : ""}`}
+                    key={review.name}
+                    type="button"
+                    aria-label={`查看${review.name}的评价`}
+                    onClick={() => setActiveReview(index)}
+                  ></button>
+                ))}
+              </div>
+            </div>
           </section>
       
           <section className="booking" id="booking">
